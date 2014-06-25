@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Stan Bondi"]
   spec.email         = ["stan@fixate.it"]
   spec.summary       = %q{AngularJS Rails form helpers.}
-  spec.description   = %q{Angulate adds AngularJS client-side validation to your form helpers.}
+  spec.description   = %q{Angulate adds AngularJS client-side field and validation helpers to Rails form helpers.}
   spec.homepage      = "https://github.com/fixate/rails-angulate"
   spec.license       = "MIT"
 
