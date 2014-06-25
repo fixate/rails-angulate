@@ -1,0 +1,7 @@
+en:
+  angulate:
+    validation:
+      errors:
+        presence: "%{model} can't be blank"
+        format: '%{model} is invalid'
+        length: '%{model} is too long'

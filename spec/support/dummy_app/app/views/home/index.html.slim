@@ -1,0 +1,11 @@
+= ng_form_for @person do |f|
+  div
+    = f.label :name
+    = f.ng_text_field :name, 'ng-required' => true
+    = f.ng_error_messages_for :name
+
+  div
+    = f.label :email
+    = f.ng_text_field :email
+    = f.ng_error_messages_for :email
+

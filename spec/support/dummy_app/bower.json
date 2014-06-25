@@ -1,0 +1,20 @@
+{
+  "name": "dummy_app",
+  "version": "0.0.0",
+  "authors": [
+    "Stan Bondi <stan@fixate.it>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.18"
+  }
+}
