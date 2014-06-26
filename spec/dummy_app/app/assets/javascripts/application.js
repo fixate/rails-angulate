@@ -11,5 +11,6 @@
 // about supported directives.
 //
 //= require angular
+//= require angulate
 
-angular.module('dummy.app', [])
+angular.module('dummy.app', ['angulate'])
