@@ -3,7 +3,7 @@ module Rails
     module Helpers
       module Tags
         class NgValidationErrors < ActionView::Helpers::Tags::Base
-          include Forwardable
+          include TagCommon
 
           def render
             attrs = {}
@@ -31,18 +31,11 @@ module Rails
 
           def angular_error_list_html
             validators.map do |validator|
-              content_tag :li, error_message_for(validator), 'ng-show' => "#{angular_form_field_object_name}.$error.#{map_validator_to_ng(validator.kind)}"
+              mapper = validator_mapper_for(validator)
+              mapper.error_messages.map do |error_type, msg|
+                content_tag :li, msg, 'ng-show' => "#{angular_form_field_object_name}.$error.#{error_type}"
+              end.join
             end.join.html_safe
-          end
-
-          def error_message_for(validator)
-            I18n.with_options locale: options[:locale], scope: [:angulate, :validation, :errors] do |locale|
-              locale.t(validator.kind) % {model: @method_name}
-            end
-          end
-
-          def map_validator_to_ng(kind)
-            configuration.validator_mappings[kind] || kind
           end
 
           def container_attrs
@@ -58,26 +51,12 @@ module Rails
             }
           end
 
-          delegate :configuration, to: Rails::Angulate
-
           def validate_on
             field = angular_form_field_object_name
 
             configuration.validate_on.map do |kind|
               "#{field}.$#{kind}"
             end.join(' && ')
-          end
-
-          def angular_form_object_name
-            @template_object.form_name_from_record_or_class(object)
-          end
-
-          def angular_form_field_object_name
-            "#{angular_form_object_name}['#{@object_name}[#{@method_name}]']"
-          end
-
-          def validators
-            object.class.validators
           end
         end
       end

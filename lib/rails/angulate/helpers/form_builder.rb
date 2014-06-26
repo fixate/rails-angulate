@@ -23,6 +23,18 @@ module Rails
             objectify_options(options)
           )
         end
+
+        # ng_invalid_for
+        %i{
+          ng_form_name
+          ng_valid
+          ng_valid_for
+          ng_invalid
+        }.each do |_simple_method|
+          define_method _simple_method do |*args, &block|
+            @template.send(_simple_method, object, *args, &block)
+          end
+        end
       end
     end
   end

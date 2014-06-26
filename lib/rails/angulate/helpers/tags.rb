@@ -5,6 +5,7 @@ module Rails
         extend ActiveSupport::Autoload
 
         eager_autoload do
+          autoload :TagCommon
           autoload :NgTextField
           autoload :NgValidationErrors
         end

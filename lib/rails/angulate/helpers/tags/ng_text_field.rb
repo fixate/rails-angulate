@@ -3,6 +3,8 @@ module Rails
     module Helpers
       module Tags
         class NgTextField < ActionView::Helpers::Tags::TextField
+          include TagCommon
+
           def render
             options = @options.stringify_keys
             options["size"] = options["maxlength"] unless options.key?("size")
@@ -12,7 +14,7 @@ module Rails
 
             add_default_name_and_id(options)
             set_ng_options(options)
-            add_ng_validations(options)
+            add_ng_validation_attrs(options)
 
             tag 'input', options
           end
@@ -31,8 +33,10 @@ module Rails
             end
           end
 
-          def add_ng_validations(options)
-
+          def add_ng_validation_attrs(attrs)
+            validators.each do |validator|
+              attrs.reverse_merge!(validator_mapper_for(validator).ng_attributes)
+            end
           end
 
           def ng_model_name(id)

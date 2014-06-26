@@ -1,11 +1,38 @@
 = ng_form_for @person do |f|
   div
     = f.label :name
-    = f.ng_text_field :name, 'ng-required' => true
+    = f.ng_text_field :name
     = f.ng_error_messages_for :name
 
   div
     = f.label :email
     = f.ng_text_field :email
     = f.ng_error_messages_for :email
+
+  div
+    = f.label :id_number
+    = f.ng_text_field :id_number
+    = f.ng_error_messages_for :id_number
+
+  = f.ng_valid_for :id_number
+    .valid style="color:green" Id number valid!
+
+  div
+    = f.label :secret_pattern
+    = f.ng_text_field :secret_pattern
+    = f.ng_error_messages_for :secret_pattern
+
+  div
+    = f.label :custom_message
+    = f.ng_text_field :custom_message
+    = f.ng_error_messages_for :custom_message
+
+  = f.ng_invalid
+    .error style="color:red" Form is invalid
+
+  = f.ng_valid
+    .valid style="color:green" Form is valid
+
+
+  = f.submit :submit, 'ng-disabled' => "#{f.ng_form_name}.$invalid"
 

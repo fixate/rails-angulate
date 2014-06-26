@@ -26,6 +26,9 @@ module Rails
         }
       end
 
+      def register_mapper(name, mapper_class)
+        Rails::Angulate::Mappers.register_constant(name, mapper_class)
+      end
     end
   end
 end
