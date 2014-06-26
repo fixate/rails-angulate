@@ -8,7 +8,7 @@ module Rails
 
         def ng_form_for(record, options = {}, &block)
           options[:html] ||= {}
-          options[:html][:name] ||= options[:as] || form_name(record)
+          options[:html][:name] ||= options[:as] || form_name_from_record_or_class(record)
           form_for(record, options, &block)
         end
 
@@ -20,7 +20,7 @@ module Rails
           Tags::NgValidationErrors.new(object_name, method, self, options).render
         end
 
-        def form_name(record)
+        def form_name_from_record_or_class(record)
           object_name = case record
           when String, Symbol
             record
@@ -29,6 +29,7 @@ module Rails
             raise ArgumentError, "First argument in form cannot contain nil or be empty" unless object
             model_name_from_record_or_class(object).param_key
           end
+
           "#{object_name}_form"
         end
       end

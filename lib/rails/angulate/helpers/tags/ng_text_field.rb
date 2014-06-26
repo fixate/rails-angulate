@@ -12,8 +12,9 @@ module Rails
 
             add_default_name_and_id(options)
             set_ng_options(options)
+            add_ng_validations(options)
 
-            tag("input", options)
+            tag 'input', options
           end
 
           def set_ng_options(options)
@@ -23,10 +24,18 @@ module Rails
               end
             end
 
-            options["ng-model"] = (options.fetch("ngModel") { ngModelName(options["id"]) }).to_s unless options.has_key?("ng-model")
+            unless options.has_key?("ng-model")
+              options["ng-model"] = options.fetch("ngModel") do
+                ng_model_name(options["id"])
+              end.to_s
+            end
           end
 
-          def ngModelName(id)
+          def add_ng_validations(options)
+
+          end
+
+          def ng_model_name(id)
             id.camelize(:lower)
           end
 

@@ -3,6 +3,8 @@ module Rails
     module Helpers
       module Tags
         class NgValidationErrors < ActionView::Helpers::Tags::Base
+          include Forwardable
+
           def render
             attrs = {}
             [:id, :class].each do |key|
@@ -40,17 +42,38 @@ module Rails
           end
 
           def map_validator_to_ng(kind)
-            Rails::Angulate.configuration.validator_mappings[kind] || kind
+            configuration.validator_mappings[kind] || kind
           end
 
           def container_attrs
+            ng_show = configuration.validate_show_condition % {
+              model: @object_name,
+              form: angular_form_object_name,
+              field: angular_form_field_object_name,
+              validate_on: validate_on || 'true'
+            }
+
             {
-              'ng-show' => "#{angular_form_field_object_name}.$invalid"
+              'ng-show' => ng_show
             }
           end
 
+          delegate :configuration, to: Rails::Angulate
+
+          def validate_on
+            field = angular_form_field_object_name
+
+            configuration.validate_on.map do |kind|
+              "#{field}.$#{kind}"
+            end.join(' && ')
+          end
+
+          def angular_form_object_name
+            @template_object.form_name_from_record_or_class(object)
+          end
+
           def angular_form_field_object_name
-            "#{@template_object.form_name(object)}['#{@object_name}[#{@method_name}]']"
+            "#{angular_form_object_name}['#{@object_name}[#{@method_name}]']"
           end
 
           def validators
