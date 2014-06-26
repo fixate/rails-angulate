@@ -1,6 +1,9 @@
 # Rails::Angulate
 
-TODO: Write a gem description
+Angulate adds AngularJS client-side field and validation helpers to Rails form helpers.
+
+Under active development (started 25 June 2014) - will update readme once this is in a decent state.
+i.e DON'T use this yet!
 
 ## Installation
 
