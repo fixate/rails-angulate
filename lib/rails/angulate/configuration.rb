@@ -8,13 +8,13 @@ module Rails
       # Possible values:
       # blur: only once the field has been visited
       # dirty: only if the field is dirty
-      # submitted: only once the user has submitted the form
+      # submit_attempt: only once the user has submitted the form
       attr_accessor :validate_on
 
       attr_accessor :validate_show_condition
 
       def initialize
-        self.validate_on = %i{ blur }
+        self.validate_on = { submit_attempt: :or, blur: nil }
         self.validate_show_condition = "%{field}.$invalid && (%{validate_on})"
       end
 
@@ -26,7 +26,7 @@ module Rails
         }
       end
 
-      def register_mapper(name, mapper_class)
+      def app_mapper(name, mapper_class)
         Rails::Angulate::Mappers.register_constant(name, mapper_class)
       end
     end

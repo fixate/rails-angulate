@@ -53,10 +53,20 @@ module Rails
 
           def validate_on
             field = angular_form_field_object_name
+            form = angular_form_object_name
 
-            configuration.validate_on.map do |kind|
-              "#{field}.$#{kind}"
-            end.join(' && ')
+            configuration.validate_on.inject('') do |str, (kind, op)|
+              op = case op
+              when :and
+                ' && '
+              when :or
+                ' || '
+              else
+                ''
+              end
+
+              str << (kind == :submit_attempt ? "#{form}.$#{kind}" : "#{field}.$#{kind}") << op
+            end
           end
         end
       end

@@ -33,6 +33,6 @@
   = f.ng_valid
     .valid style="color:green" Form is valid
 
-
-  = f.submit :submit, 'ng-disabled' => "#{f.ng_form_name}.$invalid"
+  = f.submit :disabled_submit, 'ng-disabled' => "#{f.ng_form_name}.$invalid"
+  = f.submit :submit
 
