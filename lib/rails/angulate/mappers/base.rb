@@ -4,6 +4,10 @@ module Rails
       class Base
         attr_reader :validator, :model, :attribute
 
+        def self.inherited(mapper)
+          Mappers.register_mapper(mapper)
+        end
+
         delegate :configuration, to: Rails::Angulate
 
         def initialize(model, attribute, validator)
@@ -19,7 +23,7 @@ module Rails
         def full_message(message)
           return message if attribute == :base
           attr_name = attribute.to_s.tr('.', '_').humanize
-          attr_name = @model.class.human_attribute_name(attribute, default: attribute)
+          attr_name = @model.class.human_attribute_name(attribute, default: attribute.to_s.humanize)
           with_i18n do |locale|
             locale.t(:format, {
               default:  "%{attribute} %{message}",

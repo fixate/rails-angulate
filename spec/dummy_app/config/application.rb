@@ -11,6 +11,8 @@ module DummyApp
     # We dont want to depend on a angular-rails gem, bower gives us way better
     # control of our versioning, so lets use it!
     config.assets.paths << Rails.root.join('vendor/assets/components')
+    # Autoload lib/ folder including all subdirectories
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

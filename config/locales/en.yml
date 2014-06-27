@@ -19,6 +19,7 @@ en:
           one: "is the wrong length (should be 1 character)"
           other: "is the wrong length (should be %{count} characters)"
         format: "%{attribute} is invalid"
+        email: "%{attribute} is not correctly formatted"
         # --
         inclusion: "is not included in the list"
         exclusion: "is reserved"

@@ -16,6 +16,10 @@ module Rails
           Tags::NgTextField.new(object_name, method, self, options).render
         end
 
+        def ng_email_field(object_name, method, options = {})
+          Tags::NgEmailField.new(object_name, method, self, options).render
+        end
+
         def ng_error_messages_for(object_name, method, options = {})
           Tags::NgValidationErrors.new(object_name, method, self, options).render
         end

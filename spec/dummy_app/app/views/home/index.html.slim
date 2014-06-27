@@ -6,7 +6,7 @@
 
   div
     = f.label :email
-    = f.ng_text_field :email
+    = f.ng_email_field :email
     = f.ng_error_messages_for :email
 
   div
@@ -26,6 +26,26 @@
     = f.label :custom_message
     = f.ng_text_field :custom_message
     = f.ng_error_messages_for :custom_message
+
+  div
+    = f.label :age
+    = f.ng_text_field :age
+    = f.ng_error_messages_for :age
+
+  div
+    = f.label :odd_number
+    = f.ng_text_field :odd_number
+    = f.ng_error_messages_for :odd_number
+
+  div
+    = f.label :even_number
+    = f.ng_text_field :even_number
+    = f.ng_error_messages_for :even_number
+
+  div
+    = f.label :only_integer
+    = f.ng_text_field :only_integer
+    = f.ng_error_messages_for :only_integer
 
   = f.ng_invalid
     .error style="color:red" Form is invalid

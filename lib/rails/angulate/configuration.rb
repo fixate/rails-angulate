@@ -26,8 +26,8 @@ module Rails
         }
       end
 
-      def app_mapper(name, mapper_class)
-        Rails::Angulate::Mappers.register_constant(name, mapper_class)
+      def add_mapper(name, mapper_class)
+        Rails::Angulate::Mappers.register_mapper(name, mapper_class)
       end
     end
   end

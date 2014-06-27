@@ -27,7 +27,7 @@ module Rails
                 message = locale.t(
                   :"messages.#{msg}",
                   model: model.class.name.humanize,
-                  attribute: attribute,
+                  attribute: attribute.to_s.humanize,
                   count: count
                 )
 

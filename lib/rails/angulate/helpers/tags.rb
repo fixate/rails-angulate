@@ -7,6 +7,7 @@ module Rails
         eager_autoload do
           autoload :TagCommon
           autoload :NgTextField
+          autoload :NgEmailField
           autoload :NgValidationErrors
         end
       end

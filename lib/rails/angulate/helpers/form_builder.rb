@@ -6,29 +6,23 @@ module Rails
         class_attribute :ng_field_helpers
         self.ng_field_helpers = self.field_helpers.map { |f| "ng_#{f}".to_sym }
 
-        def ng_text_field(method, options = {})
-          @template.send(
-            'ng_text_field',
-            @object_name,
-            method,
-            objectify_options(options)
-          )
+        %i{
+          ng_text_field
+          ng_email_field
+          ng_error_messages_for
+        }.each do |_adv_method|
+          define_method _adv_method do |*args, &block|
+            options = args.extract_options!
+            options = objectify_options(options)
+            @template.send(_adv_method, @object_name, *args, options, &block)
+          end
         end
 
-        def ng_error_messages_for(method, options = {})
-          @template.send(
-            'ng_error_messages_for',
-            @object_name,
-            method,
-            objectify_options(options)
-          )
-        end
-
-        # ng_invalid_for
         %i{
           ng_form_name
           ng_valid
           ng_valid_for
+          ng_invalid_for
           ng_invalid
         }.each do |_simple_method|
           define_method _simple_method do |*args, &block|
