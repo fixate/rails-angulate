@@ -48,6 +48,13 @@ module Rails
 
         protected
 
+        def translate_params
+          {
+            model: model.class.name.humanize,
+            attribute: attribute.to_s.humanize,
+          }
+        end
+
         def kind_to_ng(kind)
           configuration.validator_mappings[kind] || kind
         end

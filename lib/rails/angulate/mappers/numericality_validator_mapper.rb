@@ -5,67 +5,62 @@ module Rails
         CHECKS = ActiveModel::Validations::NumericalityValidator::CHECKS
 
         def ng_attributes
-          opts = numericality_options
-
-          condition = opts.map do |option, option_value|
-            if allow_only_integer?
-              "Math.round(value) == value"
-            else
-              case option
-              when :odd
-                "value % 2 != 0"
-              when :even
-                "value % 2 == 0"
-              else
-                case option_value
-                when Proc
-                  option_value = option_value.call(record)
-                when Symbol
-                  option_value = record.send(option_value)
-                end
-
-                op = CHECKS[option]
-
-                "value #{op} #{option_value}"
-              end
-            end
-          end.join(' && ')
-
           {}.tap do |attrs|
             attrs["ang-validator"] = "numericality"
-            attrs["ang-valid-if"] = condition
+            attrs["ang-valid-if"] = numericality_conditions.to_json
           end
         end
 
-        # def error_messages
-        #   messages = {}
-        #   default_message = validator_options[:message]
+        def error_messages
+          messages = {}
+          default_message = validator_options[:message]
 
-        #   with_i18n do |locale|
-        #     validator.class::MESSAGES.each do |key, msg|
-        #       if default_message.nil?
-        #         next unless validator_options[key]
+          default_message || with_i18n do |locale|
+            numericality_options.each do |option, option_value|
+              messages[option] = full_message(
+                locale.t :"messages.#{option}",
+                translate_params.merge(count: option_value)
+              )
 
-        #         count = validator_options[key]
+              if allow_only_integer?
+                messages[:only_integer] = full_message(
+                  locale.t :"messages.not_an_integer",
+                  translate_params.merge(count: option_value)
+                )
+              end
+            end
+          end
 
-        #         message = locale.t(
-        #           :"messages.#{msg}",
-        #           model: model.class.name.humanize,
-        #           attribute: attribute.to_s.humanize,
-        #           count: count
-        #         )
-
-        #         messages[OPTION_MAP[key]] = full_message(message)
-        #       else
-        #         messages[OPTION_MAP[key]] = default_message
-        #       end
-        #     end
-        #   end
-
-        #   messages
-        # end
+          messages
+        end
 
         protected
+
+        def numericality_conditions
+          numericality_options.inject({}) do |hash, (option, option_value)|
+            case option
+            when :odd
+              hash[option] = "value % 2 != 0"
+            when :even
+              hash[option] = "value % 2 == 0"
+            else
+              case option_value
+              when Proc
+                option_value = option_value.call(record)
+              when Symbol
+                option_value = record.send(option_value)
+              end
+
+              op = CHECKS[option]
+
+              hash[option] = "value #{op} #{option_value}"
+            end
+
+            hash[:only_integer] = "IsNumeric(value)" if allow_only_integer?
+
+            hash
+          end
+        end
 
         def allow_only_integer?
           case validator_options[:only_integer]
@@ -74,11 +69,9 @@ module Rails
           when Proc
             validator_options[:only_integer].call(model)
           else
-            validator_options[:only_integer]
+            !!validator_options[:only_integer]
           end
         end
-
-        private
 
         def numericality_options
           @numericality_options ||= validator_options.slice(*CHECKS.keys)

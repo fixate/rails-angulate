@@ -4,7 +4,7 @@ class Person
   extend ActiveModel::Naming
 
   attr_accessor :name, :email, :id_number, :secret_pattern, :custom_message,
-    :age, :odd_number, :even_number, :only_integer
+    :age, :odd_number, :even_number
 
   validates :name, :email, presence: true
   validates :email, email: true
@@ -14,8 +14,7 @@ class Person
   validates_presence_of :custom_message, message: 'This is a custom validation message!'
   validates_numericality_of :age, greater_than: 18, less_than: 120
   validates_numericality_of :odd_number, odd: true
-  validates_numericality_of :even_number, even: true
-  validates_numericality_of :only_integer, only_integer: true
+  validates_numericality_of :even_number, even: true, only_integer: true
 
 
   def initialize(attributes = {})
