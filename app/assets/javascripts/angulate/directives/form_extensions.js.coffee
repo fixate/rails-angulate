@@ -40,6 +40,7 @@ formExtensions = ['$timeout', ($timeout) ->
 angular.module 'angulate.directives'
 
   .directive('input', blurifyDirective)
+  .directive('textarea', blurifyDirective)
   .directive('select', blurifyDirective)
   .directive('blurify', blurifyDirective)
 

@@ -1,5 +1,6 @@
 angular.module 'angulate.directives'
 
+# Using ng qualifier because this "goes" with ng-maxlength and ng-minlength
   .directive 'ngIslength', ->
     restrict: 'AC',
     require: 'ngModel'

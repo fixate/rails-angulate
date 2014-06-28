@@ -12,6 +12,10 @@ module Rails
           form_for(record, options, &block)
         end
 
+        def ng_text_area(object_name, method, options = {})
+          Tags::NgTextArea.new(object_name, method, self, options).render
+        end
+
         def ng_text_field(object_name, method, options = {})
           Tags::NgTextField.new(object_name, method, self, options).render
         end

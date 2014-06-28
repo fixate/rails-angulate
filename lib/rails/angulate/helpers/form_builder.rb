@@ -8,6 +8,7 @@ module Rails
 
         %i{
           ng_text_field
+          ng_text_area
           ng_email_field
           ng_error_messages_for
         }.each do |_adv_method|

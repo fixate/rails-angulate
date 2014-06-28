@@ -4,9 +4,9 @@ class Person
   extend ActiveModel::Naming
 
   attr_accessor :name, :email, :id_number, :secret_pattern, :custom_message,
-    :age, :odd_number, :even_number
+    :age, :odd_number, :even_number, :body
 
-  validates :name, :email, presence: true
+  validates :name, :email, :body, presence: true
   validates :email, email: true
   validates_length_of :name, minimum: 5, maximum: 20
   validates_length_of :id_number, is: 10

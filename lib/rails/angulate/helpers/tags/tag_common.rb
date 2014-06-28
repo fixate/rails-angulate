@@ -23,8 +23,38 @@ module Rails
               object.class.validators.select { |v| v.attributes.include?(@method_name.to_sym) }
           end
 
+          def add_ng_validation_attrs(attrs)
+            validators.each do |validator|
+              attrs.reverse_merge!(validator_mapper_for(validator).ng_attributes)
+            end
+          end
+
           def validator_mapper_for(validator)
             Rails::Angulate::Mappers.create_validator_mapper_for(object, @method_name, validator)
+          end
+
+          def add_ng_options(options)
+            if options.has_key?("ng")
+              options.delete("ng").each do |k, v|
+                options["ng-#{k}"] = v
+              end
+            end
+          end
+
+          def add_ng_model(options)
+            unless options.has_key?("ng-model")
+              options["ng-model"] = options.fetch("ngModel") do
+                ng_model_name(options["id"])
+              end.to_s
+            end
+          end
+
+          def ng_model_name(id)
+            id.camelize(:lower)
+          end
+
+          def self.field_type
+            @field_type ||= super.sub(/^ng/, '')
           end
         end
       end
