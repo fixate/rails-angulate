@@ -9,12 +9,15 @@ angular.module 'angulate.directives'
     link: (scope, element, attrs, ctrl) ->
       return unless ctrl?
 
-      type = attrs.angValidator || 'validator'
+      validationType = attrs.angValidator || 'validator'
 
-      validate_each = (value, validations) ->
+      validate_each = (value, validationExpr) ->
+        boolOrValidations = scope.$eval(validationExpr, value: value)
+        return boolOrValidations if typeof valid is 'boolean'
+
         result = true
-        for type, v of validations
-          valid = scope.$eval(v, value: value)
+        for type, condition of boolOrValidations
+          valid = scope.$eval(condition, value: value)
           ctrl.$setValidity(type, valid)
           result &&= valid
 
@@ -22,11 +25,12 @@ angular.module 'angulate.directives'
 
       validator = (value) ->
         return unless value?
-        valid = scope.validIf(value: value)
-        valid = validate_each(value, valid) if typeof valid is 'object'
 
-        ctrl.$setValidity(type, valid)
-        return value if valid
+        if attrs.angValidIf
+          valid = validate_each(value, attrs.angValidIf)
+
+          ctrl.$setValidity(validationType, valid)
+          return value if valid
 
       ctrl.$parsers.push(validator)
       ctrl.$formatters.push(validator)
