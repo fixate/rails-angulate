@@ -1,5 +1,5 @@
 module Rails
   module Angulate
-    VERSION = "0.0.2-v1"
+    VERSION = "0.0.3.rc2"
   end
 end
