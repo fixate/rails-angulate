@@ -1,6 +1,6 @@
-#= require ./angulate/module
+#= require ./rails/angulate/module
 #
-#= require ./angulate/directives/module
-#= require ./angulate/directives/form_extensions
-#= require ./angulate/directives/is_length
-#= require ./angulate/directives/validator
+#= require ./rails/angulate/directives/module
+#= require ./rails/angulate/directives/form_extensions
+#= require ./rails/angulate/directives/is_length
+#= require ./rails/angulate/directives/validator
