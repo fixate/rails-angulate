@@ -17,24 +17,28 @@ blurifyDirective = ['$timeout', ($timeout) ->
 ]
 
 formExtensions = ['$timeout', ($timeout) ->
-  restrict: 'E',
-  require: 'form',
-  link: (scope, element, attrs, form) ->
-    element.attr('novalidate', 'novalidate')
-    form.$submitted = false
-    _submit = (e) ->
-      if form.$invalid
+  restrict: 'E'
+  priority: 10
+  require: 'form'
+  compile: ->
+    pre: (scope, element, attrs, form) ->
+      element.attr('novalidate', 'novalidate')
+      form.$submitted = false
+      _submit = (e) ->
         e.preventDefault()
-        $timeout ->
-          form.$submit_attempt = true
-      else
-        $timeout ->
-          form.$submitted = true
+        if form.$invalid
+          e.stopPropagation()
+          e.returnValue = false # IE
+          $timeout ->
+            form.$submit_attempt = true
+        else
+          $timeout ->
+            form.$submitted = true
 
-    element.on 'submit', _submit
+      element.on 'submit', _submit
 
-    scope.$on '$destroy', ->
-      element.off 'submit', _submit
+      scope.$on '$destroy', ->
+        element.off 'submit', _submit
 ]
 
 angular.module 'angulate.directives'
@@ -45,3 +49,23 @@ angular.module 'angulate.directives'
   .directive('blurify', blurifyDirective)
 
   .directive('form', formExtensions)
+  .config ['$provide', ($provide) ->
+    $provide.decorator 'ngSubmitDirective', ['$delegate', ($delegate) ->
+      # Remove default ngSubmit
+      $delegate.shift()
+      $delegate
+    ]
+  ]
+  # Override with our own directive which checks for stopped propagation
+  # TODO: File issue with angular (?)
+  .directive 'ngSubmit', ['$parse', ($parse) ->
+    compile: ($element, attr) ->
+      fn = $parse(attr['ngSubmit'])
+      return (scope, element) ->
+        element.on 'submit', (event) ->
+          unless event.isPropagationStopped?()
+            scope.$apply ->
+              fn(scope, $event: event)
+          return
+        return
+  ]
