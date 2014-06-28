@@ -11,6 +11,6 @@
 // about supported directives.
 //
 //= require angular
-//= require angulate
+//= require rails/angulate
 
 angular.module('dummy.app', ['angulate'])

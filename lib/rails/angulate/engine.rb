@@ -7,6 +7,10 @@ module Rails
           cattr_accessor(:default_form_builder) { ::Rails::Angulate::Helpers::FormBuilder }
         end
       end
+
+      initializer "angulate.assets.precompile" do |app|
+        app.config.assets.precompile += %w(rails/angulate.js)
+      end
     end
   end
 end
