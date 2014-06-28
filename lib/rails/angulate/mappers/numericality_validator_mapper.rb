@@ -56,7 +56,8 @@ module Rails
               hash[option] = "value #{op} #{option_value}"
             end
 
-            hash[:only_integer] = "IsNumeric(value)" if allow_only_integer?
+            # TODO: hmm, neither isNaN nor a Regex work when called with scope.$eval
+            hash[:only_integer] = %q{!isNaN(+value)} if allow_only_integer?
 
             hash
           end
