@@ -9,13 +9,12 @@ module Rails
       # blur: only once the field has been visited
       # dirty: only if the field is dirty
       # submit_attempt: only once the user has submitted the form
-      attr_accessor :validate_on
-
-      attr_accessor :validate_show_condition
+      attr_accessor :validate_on, :default_error_classes, :validate_show_condition
 
       def initialize
         self.validate_on = { submit_attempt: :or, blur: nil }
         self.validate_show_condition = "%{field}.$invalid && (%{validate_on})"
+        self.default_error_classes = []
       end
 
       def validator_mappings
