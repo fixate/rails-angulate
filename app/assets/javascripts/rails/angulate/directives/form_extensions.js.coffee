@@ -1,9 +1,9 @@
 # Add $blur flag to form controller
 blurifyDirective = ['$timeout', ($timeout) ->
   restrict: 'E',
-  require: '^form'
+  require: '?^form'
   link: (scope, element, attrs, form) ->
-    return unless attrs.name
+    return if !attrs.name || !form
     form.$blur = false
 
     element.on 'blur', handler = ->
@@ -17,7 +17,7 @@ blurifyDirective = ['$timeout', ($timeout) ->
 ]
 
 formExtensions = ['$timeout', ($timeout) ->
-  restrict: 'E'
+  restrict: 'EAC'
   priority: 10
   require: 'form'
   compile: ->
@@ -48,7 +48,7 @@ angular.module 'angulate.directives'
   .directive('select', blurifyDirective)
   .directive('blurify', blurifyDirective)
 
-  .directive('form', formExtensions)
+  .directive('angForm', formExtensions)
   .config ['$provide', ($provide) ->
     $provide.decorator 'ngSubmitDirective', ['$delegate', ($delegate) ->
       # Remove default ngSubmit
