@@ -6,17 +6,9 @@ module Rails
           include TagCommon
 
           def render
-            attrs = {}
-            [:id, :class].each do |key|
-              if options.include?(key)
-                value = options[key]
-                attrs[key] = value unless value.blank?
-              end
-            end
-
             # We can't use content_tag with a block (no self.output_buffer)
             # so we pass in content
-            container attrs, angular_error_list_html
+            container(angular_error_list_html)
           end
 
           private
@@ -25,8 +17,8 @@ module Rails
             @_options ||= @options.symbolize_keys
           end
 
-          def container(attrs, content)
-            content_tag :ul, content, attrs.merge(container_attrs)
+          def container(content)
+            content_tag :ul, content, container_attrs
           end
 
           def angular_error_list_html
@@ -46,16 +38,35 @@ module Rails
               validate_on: validate_on || 'true'
             }
 
-            {
+            attrs = {
               'ng-show' => ng_show
             }
+
+            attrs[:class] = configuration.default_error_classes
+              .dup.concat([options[:class]]).compact.uniq.join(' ')
+
+            attrs
+          end
+
+          def validate_on_options
+            validate_on = (options[:validate_on] || configuration.validate_on)
+            case validate_on
+            when Array
+              validate_on = validate_on.each_with_index.map { |cond, i| [cond, i == validate_on.length - 1 ? nil : :and] }
+            when Symbol
+              options[:validate_on] = Array.wrap(validate_on)
+              validate_on = validate_on_options
+            end
+            validate_on
           end
 
           def validate_on
             field = angular_form_field_object_name
             form = angular_form_object_name
 
-            configuration.validate_on.inject('') do |str, (kind, op)|
+            return validate_on_options if validate_on_options.is_a?(String)
+
+            validate_on_options.inject('') do |str, (kind, op)|
               op = case op
               when :and
                 ' && '

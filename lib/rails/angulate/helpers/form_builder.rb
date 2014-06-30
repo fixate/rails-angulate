@@ -14,6 +14,7 @@ module Rails
         }.each do |_adv_method|
           define_method _adv_method do |*args, &block|
             options = args.extract_options!
+            options = apply_builder_options(options)
             options = objectify_options(options)
             @template.send(_adv_method, @object_name, *args, options, &block)
           end
@@ -28,6 +29,14 @@ module Rails
         }.each do |_simple_method|
           define_method _simple_method do |*args, &block|
             @template.send(_simple_method, object, *args, &block)
+          end
+        end
+
+        protected
+
+        def apply_builder_options(options)
+          options.dup.tap do |opts|
+            opts[:validate_on] ||= self.options[:validate_on]
           end
         end
       end
