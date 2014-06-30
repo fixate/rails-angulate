@@ -53,8 +53,10 @@ module Rails
             id.camelize(:lower)
           end
 
-          def self.field_type
-            @field_type ||= super.sub(/^ng/, '')
+          module ClassMethods
+            def field_type
+              @field_type ||= super.sub(/^ng/, '')
+            end
           end
         end
       end
