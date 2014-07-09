@@ -47,6 +47,16 @@
     = f.ng_text_area :body
     = f.ng_error_messages_for :body
 
+  div
+    = f.label :no_validations
+    = f.ng_text_field :no_validations
+    = f.ng_error_messages_for :no_validations
+
+  div
+    = f.label :multiple_custom_messages
+    = f.ng_text_field :multiple_custom_messages
+    = f.ng_error_messages_for :multiple_custom_messages
+
   = f.ng_invalid
     .error style="color:red" Form is invalid
 

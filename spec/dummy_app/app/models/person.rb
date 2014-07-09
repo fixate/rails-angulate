@@ -4,7 +4,7 @@ class Person
   extend ActiveModel::Naming
 
   attr_accessor :name, :email, :id_number, :secret_pattern, :custom_message,
-    :age, :odd_number, :even_number, :body
+    :age, :odd_number, :even_number, :body, :no_validations, :multiple_custom_messages
 
   validates :name, :email, :body, presence: true
   validates :email, email: true
@@ -15,6 +15,10 @@ class Person
   validates_numericality_of :age, greater_than: 18, less_than: 120
   validates_numericality_of :odd_number, odd: true
   validates_numericality_of :even_number, even: true, only_integer: true
+  validates :multiple_custom_messages,
+    presence: { message: 'This is required son!' },
+    numericality: { message: 'should be a number too' }
+
 
 
   def initialize(attributes = {})
