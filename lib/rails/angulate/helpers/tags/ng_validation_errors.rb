@@ -8,7 +8,7 @@ module Rails
           def render
             # We can't use content_tag with a block (no self.output_buffer)
             # so we pass in content
-            container(angular_error_list_html)
+            container(angular_error_list_html) unless validators.empty?
           end
 
           private
