@@ -1,7 +1,7 @@
 module Rails
   module Angulate
     module Mappers
-      class LengthValidatorMapper < Base
+      class LengthValidatorMapper < BaseMapper
         OPTION_MAP = { is: :islength, minimum: :minlength, maximum: :maxlength }.freeze
 
         def ng_attributes

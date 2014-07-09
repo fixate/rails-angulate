@@ -1,7 +1,7 @@
 module Rails
   module Angulate
     module Mappers
-      class FormatValidatorMapper < Base
+      class FormatValidatorMapper < BaseMapper
         def ng_attributes
           {}.tap do |attrs|
             if pattern = validator_options[:javascript_format]

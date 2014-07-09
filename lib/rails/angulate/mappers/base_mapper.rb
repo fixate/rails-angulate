@@ -1,7 +1,7 @@
 module Rails
   module Angulate
     module Mappers
-      class Base
+      class BaseMapper
         attr_reader :validator, :model, :attribute
 
         def self.inherited(mapper)
@@ -27,7 +27,7 @@ module Rails
           with_i18n do |locale|
             locale.t(:format, {
               default:  "%{attribute} %{message}",
-              attribute: attr_name,
+              attribute: attr_name.to_s.humanize,
               message:   message
             })
           end
@@ -40,7 +40,7 @@ module Rails
             {
               kind_to_ng(validator.kind) => default_message || locale.t(:"messages.#{validator.kind}", {
                 model: model.class.name.humanize,
-                  attribute: attribute
+                  attribute: attribute.to_s.humanize
               })
             }
           end

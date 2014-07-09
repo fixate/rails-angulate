@@ -1,7 +1,7 @@
 module Rails
   module Angulate
     module Mappers
-      class ValidatorMapper < Base
+      class ValidatorMapper < BaseMapper
         def ng_attributes
           {
             "ng-#{mapped_kind}" => true

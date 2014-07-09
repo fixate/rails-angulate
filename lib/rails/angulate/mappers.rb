@@ -1,4 +1,4 @@
-require 'rails/angulate/mappers/base'
+require 'rails/angulate/mappers/base_mapper'
 
 module Rails
   module Angulate

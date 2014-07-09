@@ -1,7 +1,7 @@
 module Rails
   module Angulate
     module Mappers
-      class NumericalityValidatorMapper < Base
+      class NumericalityValidatorMapper < BaseMapper
         CHECKS = ActiveModel::Validations::NumericalityValidator::CHECKS
 
         def ng_attributes
