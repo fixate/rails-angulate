@@ -25,6 +25,10 @@ module Rails
           Tags::NgEmailField.new(object_name, method, self, options).render
         end
 
+        def ng_select(object_name, method, choices = {}, options = {}, html_options = {})
+          Tags::NgSelect.new(object_name, method, self, choices, options, html_options).render
+        end
+
         def ng_error_messages_for(object_name, method, options = {})
           Tags::NgValidationErrors.new(object_name, method, self, options).render
         end

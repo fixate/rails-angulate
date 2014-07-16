@@ -44,13 +44,14 @@ module Rails
           def add_ng_model(options)
             unless options.has_key?("ng-model")
               options["ng-model"] = options.fetch("ngModel") do
-                ng_model_name(options["id"])
+                name = options["id"] || options["name"]
+                ng_model_name(name)
               end.to_s
             end
           end
 
-          def ng_model_name(id)
-            id.camelize(:lower)
+          def ng_model_name(name)
+            name.camelize(:lower)
           end
 
           module ClassMethods
