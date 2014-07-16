@@ -33,6 +33,11 @@
     = f.ng_error_messages_for :age
 
   div
+    = f.label :number
+    = f.ng_text_field :number
+    = f.ng_error_messages_for :number
+
+  div
     = f.label :odd_number
     = f.ng_text_field :odd_number
     = f.ng_error_messages_for :odd_number
@@ -56,6 +61,11 @@
     = f.label :multiple_custom_messages
     = f.ng_text_field :multiple_custom_messages
     = f.ng_error_messages_for :multiple_custom_messages
+
+  div
+    = f.label :select_thing
+    /* = f.collection_select :select_thing, {one: '1', two:'2', three:'3'}, :*/
+    = f.ng_error_messages_for :select_thing
 
   = f.ng_invalid
     .error style="color:red" Form is invalid

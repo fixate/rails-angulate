@@ -43,6 +43,8 @@ module Rails
               hash[option] = "value % 2 != 0"
             when :even
               hash[option] = "value % 2 == 0"
+            when :only_integer
+              hash[option] = %q{value / 1 == value}
             else
               case option_value
               when Proc
@@ -55,9 +57,6 @@ module Rails
 
               hash[option] = "value #{op} #{option_value}"
             end
-
-            # TODO: hmm, neither isNaN nor a Regex work when called with scope.$eval
-            hash[:only_integer] = %q{!isNaN(+value)} if allow_only_integer?
 
             hash
           end
@@ -75,7 +74,7 @@ module Rails
         end
 
         def numericality_options
-          @numericality_options ||= validator_options.slice(*CHECKS.keys)
+          @numericality_options ||= validator_options.slice(*CHECKS.keys + [:only_integer])
         end
       end
     end
