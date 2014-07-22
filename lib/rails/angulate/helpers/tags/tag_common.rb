@@ -19,8 +19,17 @@ module Rails
           end
 
           def validators
-            @validators ||=
-              object.class.validators.select { |v| v.attributes.include?(@method_name.to_sym) }
+            if object.nil?
+              raise RuntimeError.new(<<-TEXT.strip)
+              Form helper object is nil. If this is an association
+              make sure that you accept_nested_attributes_for :assocation
+              so that validations for nested attributes can be determined.
+              TEXT
+            end
+
+            @validators ||= object.class.validators.select { |v|
+              v.attributes.include?(@method_name.to_sym)
+            }
           end
 
           def add_ng_validation_attrs(attrs)
