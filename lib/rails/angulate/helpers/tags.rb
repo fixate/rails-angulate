@@ -11,6 +11,7 @@ module Rails
           autoload :NgTextArea
           autoload :NgEmailField
           autoload :NgValidationErrors
+          autoload :NgValid
         end
       end
     end

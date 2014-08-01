@@ -8,7 +8,7 @@ module Rails
           def render
             # We can't use content_tag with a block (no self.output_buffer)
             # so we pass in content
-            container(angular_error_list_html) unless validators.empty?
+            container(error_list_html) unless validators.empty?
           end
 
           private
@@ -21,11 +21,11 @@ module Rails
             content_tag :ul, content, container_attrs
           end
 
-          def angular_error_list_html
+          def error_list_html
             validators.map do |validator|
               mapper = validator_mapper_for(validator)
               mapper.error_messages.map do |error_type, msg|
-                content_tag :li, msg, 'ng-show' => "#{angular_form_field_object_name}.$error.#{error_type}"
+                content_tag :li, msg, 'ng-show' => "#{form_field_object_name}.$error.#{error_type}"
               end.join
             end.join.html_safe
           end
@@ -33,8 +33,8 @@ module Rails
           def container_attrs
             ng_show = configuration.validate_show_condition % {
               model: @object_name,
-              form: angular_form_object_name,
-              field: angular_form_field_object_name,
+              form: form_object_name,
+              field: form_field_object_name,
               validate_on: validate_on || 'true'
             }
 
@@ -61,8 +61,7 @@ module Rails
           end
 
           def validate_on
-            field = angular_form_field_object_name
-            form = angular_form_object_name
+            form = form_object_name
 
             return validate_on_options if validate_on_options.is_a?(String)
 
@@ -76,7 +75,7 @@ module Rails
                 ''
               end
 
-              str << (kind == :submit_attempt ? "#{form}.$#{kind}" : "#{field}.$#{kind}") << op
+              str << (kind == :submit_attempt ? "#{form}.$#{kind}" : "#{field_name}.$#{kind}") << op
             end
           end
         end

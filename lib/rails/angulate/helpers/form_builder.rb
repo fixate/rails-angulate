@@ -20,16 +20,28 @@ module Rails
           end
         end
 
-        %i{
-          ng_form_name
-          ng_valid
-          ng_valid_for
-          ng_invalid_for
-          ng_invalid
-        }.each do |_simple_method|
-          define_method _simple_method do |*args, &block|
-            @template.send(_simple_method, object, *args, &block)
-          end
+        def ng_form_name
+          @template.ng_form_name(@object_name)
+        end
+
+        def ng_valid(options = {}, html_options = {}, &block)
+          options = objectify_options(options)
+          @template.ng_valid(@object_name, options, html_options, &block)
+        end
+
+        def ng_invalid(options = {}, html_options = {}, &block)
+          options = objectify_options(options)
+          @template.ng_invalid(@object_name, options, html_options, &block)
+        end
+
+        def ng_valid_for(method, options = {}, html_options = {}, &block)
+          options = objectify_options(options)
+          @template.ng_valid_for(@object_name, method, options, html_options, &block)
+        end
+
+        def ng_invalid_for(method, options = {}, html_options = {}, &block)
+          options = objectify_options(options)
+          @template.ng_invalid_for(@object_name, method, options, html_options, &block)
         end
 
         def ng_select(method, choices = {}, options = {}, html_options = {})

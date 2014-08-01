@@ -10,26 +10,18 @@ module Rails
 
           delegate :configuration, to: Rails::Angulate
 
-          def angular_form_object_name
-            @template_object.ng_form_name(object)
-          end
-
-          def angular_form_field_object_name
-            @template_object.ng_form_field_name(object, @method_name)
-          end
-
           def validators
             if object.nil?
               raise RuntimeError.new(<<-TEXT.strip)
-              Form helper object is nil. If this is an association
-              make sure that you accept_nested_attributes_for :assocation
-              so that validations for nested attributes can be determined.
+                Form helper object is nil. If this is an association
+                make sure that you accept_nested_attributes_for :assocation
+                so that validations for nested attributes can be determined.
               TEXT
             end
 
-            @validators ||= object.class.validators.select { |v|
+            @validators ||= object.class.validators.select do |v|
               v.attributes.include?(@method_name.to_sym)
-            }
+            end
           end
 
           def add_ng_validation_attrs(attrs)
@@ -61,6 +53,22 @@ module Rails
 
           def ng_model_name(name)
             name.camelize(:lower)
+          end
+
+          def form_object_name
+            "#{@object_name.gsub(/\[.+\]/, '')}_form"
+          end
+
+          def form_field_object_name
+            "#{form_object_name}['#{field_name}']"
+          end
+
+          def field_name
+            @field_name ||= begin
+              names = {}
+              add_default_name_and_id(names)
+              names['name']
+            end
           end
 
           module ClassMethods

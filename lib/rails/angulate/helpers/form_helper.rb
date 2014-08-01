@@ -33,24 +33,20 @@ module Rails
           Tags::NgValidationErrors.new(object_name, method, self, options).render
         end
 
-        def ng_valid(record, &block)
-          valid_wrapper(record, '$valid', &block)
+        def ng_valid(object_name, options, html_options, &block)
+          Tags::NgValid.new(object_name, nil, self, options, html_options, '$valid').render(&block)
         end
 
-        def ng_invalid(record, &block)
-          valid_wrapper(record, '$invalid', &block)
+        def ng_invalid(object_name, options, html_options, &block)
+          Tags::NgValid.new(object_name, nil, self, options, html_options, '$invalid').render(&block)
         end
 
-        def ng_valid_for(record, attribute, &block)
-          valid_wrapper(record, '$valid', attribute, &block)
+        def ng_valid_for(object_name, method, options, html_options, &block)
+          Tags::NgValid.new(object_name, method, self, options, html_options, '$valid').render(&block)
         end
 
-        def ng_invalid_for(record, attribute, &block)
-          valid_wrapper(record, '$invalid', attribute, &block)
-        end
-
-        def ng_form_field_name(record, attribute)
-          "#{ng_form_name(record)}['#{object_name_for(record)}[#{attribute}]']"
+        def ng_invalid_for(object_name, method, options, html_options, &block)
+          Tags::NgValid.new(object_name, method, self, options, html_options, '$invalid').render(&block)
         end
 
         def ng_form_name(record)
@@ -68,12 +64,6 @@ module Rails
             raise ArgumentError, "First argument in form cannot contain nil or be empty" unless object
             model_name_from_record_or_class(object).param_key
           end
-        end
-
-        def valid_wrapper(record, type, attribute = nil, &block)
-          ng_if = attribute.nil? ? ng_form_name(record) : ng_form_field_name(record, attribute)
-          content = capture(&block)
-          content_tag :span, content.html_safe, 'ng-if' => "#{ng_if}.#{type}"
         end
 
       end

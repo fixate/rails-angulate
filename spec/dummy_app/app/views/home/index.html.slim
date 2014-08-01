@@ -17,6 +17,9 @@
   = f.ng_valid_for :id_number
     .valid style="color:green" Id number valid!
 
+  = f.ng_invalid_for :id_number
+    .valid style="color:red" Id number invalid!
+
   div
     = f.label :secret_pattern
     = f.ng_text_field :secret_pattern
@@ -61,6 +64,14 @@
     = f.label :multiple_custom_messages
     = f.ng_text_field :multiple_custom_messages
     = f.ng_error_messages_for :multiple_custom_messages
+
+  hr
+
+  = f.fields_for :pet do |pet|
+    div
+      = pet.label :name
+      = pet.ng_text_field :name
+      = pet.ng_error_messages_for :name
 
   div
     = f.label :select_thing

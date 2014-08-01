@@ -5,7 +5,7 @@ class Person
 
   attr_accessor :name, :email, :id_number, :secret_pattern, :custom_message,
     :age, :number, :odd_number, :even_number, :body, :no_validations, :multiple_custom_messages,
-    :select_thing
+    :select_thing, :pet
 
   validates :name, :email, :body, presence: true
   validates :email, email: true
@@ -21,10 +21,18 @@ class Person
     presence: { message: 'This is required son!' },
     numericality: { message: 'should be a number too' }
 
-
   def initialize(attributes = {})
     attributes.each do |name, value|
       send("#{name}=", value)
+    end
+
+    self.pet ||= Pet.new(attributes[:pet] || {})
+  end
+
+  # Allow Rails to pick up pet as a nested attribute
+  def pet_attributes=(attrs)
+    attrs.each do |name, value|
+      pet.send("#{name}=", value)
     end
   end
 
