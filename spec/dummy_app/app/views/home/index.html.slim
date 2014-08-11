@@ -78,6 +78,11 @@
     /* = f.collection_select :select_thing, {one: '1', two:'2', three:'3'}, :*/
     = f.ng_error_messages_for :select_thing
 
+  div
+    = f.label :required_js_only
+    = f.ng_text_field :required_js_only, 'ng-required' => true
+    = f.ng_error_messages_for :required_js_only, '$required' => 'This is required too.'
+
   = f.ng_invalid
     .error style="color:red" Form is invalid
 

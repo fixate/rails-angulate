@@ -5,7 +5,7 @@ class Person
 
   attr_accessor :name, :email, :id_number, :secret_pattern, :custom_message,
     :age, :number, :odd_number, :even_number, :body, :no_validations, :multiple_custom_messages,
-    :select_thing, :pet
+    :select_thing, :pet, :required_js_only
 
   validates :name, :email, :body, presence: true
   validates :email, email: true

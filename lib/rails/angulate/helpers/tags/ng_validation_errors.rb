@@ -8,7 +8,7 @@ module Rails
           def render
             # We can't use content_tag with a block (no self.output_buffer)
             # so we pass in content
-            container(error_list_html) unless validators.empty?
+            container(error_list_html) unless validators.empty? && !has_optional_validators?
           end
 
           private
@@ -22,12 +22,32 @@ module Rails
           end
 
           def error_list_html
-            validators.map do |validator|
+            html = ''
+
+            html << validators.map do |validator|
               mapper = validator_mapper_for(validator)
               mapper.error_messages.map do |error_type, msg|
                 content_tag :li, msg, 'ng-show' => "#{form_field_object_name}.$error.#{error_type}"
               end.join
-            end.join.html_safe
+            end.join
+
+            html << (extra_validators || '')
+            html.html_safe
+          end
+
+          def extra_validators
+            options.inject('') do |html, (k, v)|
+              k = k.to_s
+              html << if k.start_with?('$')
+                content_tag(:li, v, 'ng-show' => "#{form_field_object_name}.$error.#{k[1..-1]}")
+              else
+                ''
+              end
+            end
+          end
+
+          def has_optional_validators?
+            options.keys.any? { |k| k.to_s.start_with?('$') }
           end
 
           def container_attrs
