@@ -55,6 +55,7 @@ module Rails
           options.dup.tap do |opts|
             opts[:validate_on] ||= self.options[:validate_on]
             opts[:form_name] ||= self.options.fetch(:html, {})[:name]
+            opts[:prepopulate_model] ||= self.options[:prepopulate_models]
           end
         end
       end

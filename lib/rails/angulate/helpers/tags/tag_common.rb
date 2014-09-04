@@ -40,6 +40,11 @@ module Rails
                 options["ng-#{k}"] = v
               end
             end
+
+            if options.delete('prepopulate_model')
+              model_name = ng_model_name(options["id"] || options["name"])
+              options['ng-init'] = "#{model_name} = '#{options['value']}'"
+            end
           end
 
           def add_ng_model(options)
