@@ -56,7 +56,8 @@ module Rails
           end
 
           def form_object_name
-            "#{@object_name.gsub(/\[.+\]/, '')}_form"
+            name = options[:form_name] rescue nil
+            name || "#{@object_name.gsub(/\[.+\]/, '')}_form"
           end
 
           def form_field_object_name

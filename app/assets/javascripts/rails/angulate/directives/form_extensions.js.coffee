@@ -25,7 +25,7 @@ formExtensions = ['$timeout', ($timeout) ->
       element.attr('novalidate', 'novalidate')
       form.$submitted = false
       _submit = (e) ->
-        e.preventDefault()
+        e.preventDefault() if attrs.ngSubmit || form.$invalid
         if form.$invalid
           e.stopPropagation()
           e.returnValue = false # IE

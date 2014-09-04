@@ -92,3 +92,12 @@
   = f.submit :disabled_submit, 'ng-disabled' => "#{f.ng_form_name}.$invalid"
   = f.submit :submit
 
+= ng_form_for @person, { html: { name: 'blah', 'ng-submit' => 'submitted = true' } }  do |f|
+  div
+    = f.label :name
+    = f.ng_text_field :name
+    = f.ng_error_messages_for :name
+
+  span ng-show="submitted"
+    | submitted!
+  = f.submit :submit

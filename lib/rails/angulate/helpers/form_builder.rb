@@ -54,6 +54,7 @@ module Rails
         def apply_builder_options(options)
           options.dup.tap do |opts|
             opts[:validate_on] ||= self.options[:validate_on]
+            opts[:form_name] ||= self.options.fetch(:html, {})[:name]
           end
         end
       end

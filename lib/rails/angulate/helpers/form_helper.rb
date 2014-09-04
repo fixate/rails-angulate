@@ -9,7 +9,7 @@ module Rails
         def ng_form_for(record, options = {}, &block)
           options[:html] ||= {}
           options[:html]['ang-form'] = ""
-          options[:html][:name] ||= options[:as] || ng_form_name(record)
+          options[:html][:name] ||= ng_form_name(record)
           form_for(record, options, &block)
         end
 
