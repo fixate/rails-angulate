@@ -106,11 +106,16 @@ hr
 
 hr
 
-= ng_form_for Person.new(name: 'tester'), {prepopulate_models: true, html: { name: 'prepoped', 'ng-submit' => 'submitted = true' }}  do |f|
+= ng_form_for Person.new(name: 'tester', email: 'test@test.com'), {prepopulate_models: true, html: { name: 'prepoped', 'ng-submit' => 'submitted = true' }}  do |f|
   div
     = f.label :name
     = f.ng_text_field :name
     = f.ng_error_messages_for :name
+
+  div
+    = f.label :email
+    = f.ng_email_field :email
+    = f.ng_error_messages_for :email
 
   span ng-show="submitted"
     | submitted!
