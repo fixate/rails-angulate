@@ -20,7 +20,6 @@ formExtensions = ['$timeout', ($timeout) ->
   restrict: 'EAC'
   priority: 10
   require: 'form'
-  scope: true
   compile: ->
     pre: (scope, element, attrs, form) ->
       element.attr('novalidate', 'novalidate')
