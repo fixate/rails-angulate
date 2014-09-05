@@ -45,6 +45,7 @@ module Rails
         end
 
         def ng_select(method, choices = {}, options = {}, html_options = {})
+          options = apply_builder_options(options)
           options = objectify_options(options)
           @template.ng_select(@object_name, method, choices, options, html_options)
         end
