@@ -38,3 +38,4 @@ en:
         other_than: "must be other than %{count}"
         odd: "must be odd"
         even: "must be even"
+        uniqueness: 'is not unique'
