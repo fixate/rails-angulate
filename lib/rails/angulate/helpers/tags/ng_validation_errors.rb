@@ -95,7 +95,7 @@ module Rails
                 ''
               end
 
-              str << (kind == :submit_attempt ? "#{form}.$#{kind}" : "#{field_name}.$#{kind}") << op
+              str << (kind == :submit_attempt ? "#{form}.$#{kind}" : "#{form}['#{field_name}'].$#{kind}") << op
             end
           end
         end
